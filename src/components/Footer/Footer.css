@@ -1,0 +1,26 @@
+.custom-footer {
+    background-color: #2E4C6D; /* Azul profundo */
+    color: #FFFFFF; /* Texto em branco */
+    padding: 1px 0;
+    text-align: center;
+}
+
+.footer-text {
+    margin: 0;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0;
+}
+
+.footer-link {
+    color: #FFFFFF; /* Links em branco */
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.footer-link:hover {
+    color: #E89BA8; /* Mudar a cor do link ao passar o mouse */
+}

@@ -1,0 +1,83 @@
+
+.custom-navbar {
+    background-color: #2E4C6D; /* Fundo da navbar */
+    color: #E89BA8; /* Cor do texto */
+    border-bottom: 1px solid #E89BA8; /* Borda inferior */
+    padding: 10px; /* Espaçamento interno */
+    margin-bottom: 20px;
+    z-index: 1000;
+}
+
+.custom-navbar .navbar-brand {
+    font-size: 24px; /* Tamanho da fonte da marca */
+    text-decoration: none; /* Remover sublinhado */
+    color: #FFFFFF; /* Cor do texto da marca */
+}
+
+.custom-navbar .nav-link {
+    color: #FFFFFF; /* Cor do texto dos links */
+}
+
+.custom-navbar .nav-link:hover {
+    color: #E89BA8; /* Cor ao passar o mouse */
+}
+
+.navbar-toggler {
+    background: none; /* Remover fundo padrão */
+    border: none; /* Remover borda */
+    cursor: pointer; /* Mostrar cursor de ponteiro */
+}
+
+.navbar-toggler-icon {
+    display: inline-block;
+    width: 30px; /* Largura do ícone */
+    height: 2px; /* Altura do ícone */
+    background-color: #E89BA8; /* Cor do ícone */
+    position: relative; /* Posicionamento relativo para alinhamento */
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+    content: '';
+    display: inline-block;
+    width: 30px; /* Largura da linha */
+    height: 2px; /* Altura da linha */
+    background-color: #000; /* Cor das linhas */
+    position: absolute; /* Posicionamento absoluto */
+}
+
+.navbar-toggler-icon::before {
+    top: -8px; /* Distância da linha superior */
+}
+
+.navbar-toggler-icon::after {
+    bottom: -8px; /* Distância da linha inferior */
+}
+
+.navbar-collapse {
+    display: none; /* Inicialmente escondido */
+}
+
+.navbar-collapse.show {
+    display: block; /* Mostrar na alternância */
+}
+
+.navbar-nav {
+    list-style-type: none; /* Remover marcadores */
+    padding: 0; /* Remover padding */
+}
+
+.nav-item {
+    margin: 0 10px; /* Espaçamento entre itens */
+}
+
+/* Estilo Responsivo */
+@media (max-width: 768px) {
+    .navbar-collapse {
+        display: none; /* Inicialmente escondido */
+    }
+
+    .navbar-toggler.active + .navbar-collapse {
+        display: block; /* Mostrar ao ativar */
+    }
+}

@@ -1,0 +1,35 @@
+/* Carrinho.css */
+
+/* Estilo do fundo do contêiner */
+.custom-background {
+    background-color: #E89BA8; /* Rosa claro */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+}
+
+/* Estilo do cartão */
+.custom-card {
+    background-color: #A2C2D4; /* Azul claro para o cartão */
+    border-radius: 8px; /* Bordas arredondadas */
+    border: 1px solid rgb(194, 193, 193); /* Borda do cartão */
+}
+
+/* Estilo do botão */
+.btn-cart {
+    background-color: #2E4C6D; /* Azul profundo */
+    color: #FFFFFF; /* Texto branco */
+}
+
+/* Estilo da imagem */
+.cor {
+    width: 100%; /* Largura da imagem ajustada */
+    height: auto; /* Mantém a proporção */
+    max-height: 200px; /* Limita a altura da imagem */
+    object-fit: cover; /* Corta a imagem para preencher o espaço */
+    border-radius: 8px; /* Bordas arredondadas */
+}
+
+.disabled {
+    opacity: 0.6; /* Para deixar o botão menos visível */
+    cursor: not-allowed; /* Muda o cursor para indicar que não é clicável */
+}

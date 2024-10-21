@@ -1,0 +1,17 @@
+.custom-btn {
+    background-color: #2E4C6D; /* Azul profundo */
+    color: #FFFFFF; /* Texto branco */
+    border: none; /* Remove a borda */
+}
+
+.custom-btn:hover {
+    background-color: #E89BA8; /* Muda para rosa claro ao passar o mouse */
+    color: #2E4C6D; /* Texto em azul profundo ao passar o mouse */
+}
+
+.alert {
+    background-color: #f8d7da; /* Fundo claro para mensagem de erro */
+    color: #721c24; /* Texto escuro */
+    border: 1px solid #f5c6cb; /* Borda do alerta */
+    border-radius: 5px; /* Bordas arredondadas */
+}

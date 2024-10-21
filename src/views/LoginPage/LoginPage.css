@@ -1,0 +1,39 @@
+/* LoginPage.css */
+
+/* Estilos gerais */
+.custom-background {
+    background-color: #E89BA8; /* Cor de fundo rosa claro */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+}
+
+/* Estilos do cartão */
+.custom-card {
+    border: 1px solid rgb(194, 193, 193); /* Borda do cartão */
+    border-radius: 8px; /* Bordas arredondadas do cartão */
+}
+
+/* Estilos do botão */
+.btn-cart {
+    font-size: 25px; /* Tamanho da fonte do botão */
+    background-color: #2E4C6D; /* Cor do fundo do botão */
+    color: #ffffff; /* Cor do texto do botão */
+}
+
+/* Imagem */
+.cor {
+    width: 100%; /* Largura da imagem ajustada */
+    height: auto; /* Mantém a proporção */
+    max-height: 100%; /* Limita a altura da imagem */
+    object-fit: cover; /* Corta a imagem para preencher o espaço */
+    border-radius: 8px 0 0 8px; /* Bordas arredondadas */
+}
+
+/* Estilos de texto e links */
+.text-primary {
+    color: #2E4C6D; /* Azul profundo para links */
+}
+
+.text-muted {
+    color: #393f81; /* Cor do texto secundário */
+}

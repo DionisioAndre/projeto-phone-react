@@ -1,0 +1,84 @@
+/* Estilos gerais */
+html, body {
+    height: 100%; /* Garantir que o HTML e o body ocupem 100% da altura */
+    margin: 0; /* Remover margens padrão */
+    font-family: 'Arial', sans-serif; /* Defina uma fonte padrão */
+    margin-top: 1rem;
+}
+
+.custom-background {
+    background-color: #E89BA8; /* Cor de fundo do container */
+    padding: 20px; /* Adicione algum espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+    flex: 1; /* Expande para preencher o espaço disponível */
+    margin-top: 8rem;
+}
+
+/* Estilos do container de cartões */
+.container_cards {
+    display: flex;
+    gap: 50px; /* Espaçamento entre cartões */
+    flex-wrap: wrap; /* Permite que os cartões se movam para a próxima linha */
+    justify-content: center; /* Centraliza os cartões */
+    align-items: center; /* Alinha os cartões verticalmente */
+    margin-bottom: 70px; /* Espaço abaixo do container de cartões */
+}
+
+.container_cards_content {
+    height: 350px; /* Altura do cartão ajustada */
+    width: 250px; /* Largura do cartão ajustada */
+    border: 1px solid rgb(194, 193, 193); /* Borda do cartão */
+    display: flex;
+    justify-content: space-between; /* Espaçamento entre os itens dentro do cartão */
+    flex-direction: column; /* Alinha os itens verticalmente */
+    align-items: center; /* Centraliza os itens */
+    padding: 20px; /* Espaçamento interno do cartão */
+}
+
+/* Estilos do botão */
+button {
+    font-size: 25px; /* Tamanho da fonte do botão */
+    background: transparent; /* Fundo transparente */
+    border: none; /* Remove a borda do botão */
+    color: #2E4C6D; /* Cor do texto do botão (azul profundo) */
+    cursor: pointer; /* Altera o cursor para indicar que é clicável */
+}
+
+/* Estilos para a imagem */
+.cor {
+    width: 200px; /* Largura da imagem ajustada para 100% do card */
+    height: auto; /* Mantém a proporção */
+    max-height: 200px; /* Limita a altura da imagem */
+    object-fit: contain; /* Corta a imagem para preencher o espaço */
+    border-radius: 8px; /* Borda arredondada, opcional */
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .container_cards {
+        flex-direction: column; /* Alinha cartões em coluna em telas menores */
+        align-items: center; /* Centraliza os cartões */
+    }
+
+    /* Estilos para a imagem */
+    .cor {
+        width: 100%; /* Largura da imagem ajustada para 100% do card */
+        height: auto; /* Mantém a proporção */
+        max-height: 100%; /* Limita a altura da imagem */
+        object-fit: contain; /* Ajusta a imagem para caber no contêiner sem recortar */
+        border-radius: 8px; /* Borda arredondada, opcional */
+    }
+}
+
+.total-paragraph {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    background: #A2C2D4;
+    padding: 2px;
+    border-radius: 5px;
+    color: #2E4C6D;
+    z-index: 2000;
+    cursor: pointer;
+}
+

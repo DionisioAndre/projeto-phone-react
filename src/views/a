@@ -1,0 +1,141 @@
+// ProductManagement.js
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useAuth } from '../../../context/dedica';
+import './ProductForm.css';
+
+const ProductManagement = () => {
+    const { token, isAdmin } = useAuth();
+    const [products, setProducts] = useState([]);
+    const [newProduct, setNewProduct] = useState({ name: '', price: '' });
+    
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const response = await axios.get('http://127.0.0.1:8000/api/routeradmin/products/', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setProducts(response.data);
+        };
+        fetchProducts();
+    }, [token]);
+
+    if (!isAdmin()) return <p className="text-danger">Access denied.</p>;
+
+    const addProduct = async () => {
+        const response = await axios.post('http://127.0.0.1:8000/api/routerproducts/', newProduct, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        setProducts([...products, response.data]);
+        setNewProduct({ name: '', price: '' });
+    };
+
+    const deleteProduct = async (productId) => {
+        await axios.delete(`http://127.0.0.1:8000/api/routerproducts/${productId}/`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        setProducts(products.filter(product => product.id !== productId));
+    };
+
+    return (
+        <div className="container mt-5">
+            <h2>Product Management</h2>
+            <div className="mb-3">
+                <input
+                    type="text"
+                    placeholder="Product Name"
+                    className="form-control"
+                    value={newProduct.name}
+                    onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                />
+            </div>
+            <div className="mb-3">
+                <input
+                    type="number"
+                    placeholder="Product Price"
+                    className="form-control"
+                    value={newProduct.price}
+                    onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+                />
+            </div>
+            <button onClick={addProduct} className="btn btn-primary mb-3">Add Product</button>
+            <ul className="list-group">
+          <div className="row">
+          {products.map(product => (
+            <div key={product.id}className="col-md-4 mb-4">
+              <h3 className="card-title">Produ nome: {product.name}</h3>
+              <h4 className="card-text">Pedido ID: {product.id}</h4>
+              <img src={formatImageUrl(product.image)} alt="imagem"className="card-img-top" />
+              <p className="card-text">tipo:{product.tipo}</p>
+              <p className="card-text">Preço: R${product.price}</p>
+              <p>Quantidade: {product.quantity}</p>
+              <p>Data de criacao: {new Date(product.created_at).toLocaleDateString()}</p>
+              <Button variant="danger" onClick={() => handleDelete(product.id)}>Apagar</Button>
+              <hr />
+            </div>
+          ))}
+          </div>
+        </ul>
+        {/* Modal para atualizar produto */}
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Atualizar Produto</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label className="form-label">Nome</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                value={name} 
+                                onChange={(e) => setName(e.target.value)} 
+                                required 
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Tipo</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                value={tipo} 
+                                onChange={(e) => setTipo(e.target.value)} 
+                                required 
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Preço</label>
+                            <input 
+                                type="number" 
+                                className="form-control" 
+                                value={price} 
+                                onChange={(e) => setPrice(e.target.value)} 
+                                required 
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Descrição</label>
+                            <textarea 
+                                className="form-control" 
+                                value={description} 
+                                onChange={(e) => setDescription(e.target.value)} 
+                                required 
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Escolha uma nova imagem (opcional)</label>
+                            <input 
+                                type="file" 
+                                className="form-control" 
+                                onChange={handleImageChange} 
+                            />
+                        </div>
+                        <Button variant="primary" type="submit">Atualizar</Button>
+                    </form>
+                </Modal.Body>
+            </Modal>
+        </div>
+    );
+};
+
+export default ProductManagement;
