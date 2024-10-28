@@ -4,6 +4,7 @@ import { BsFillCartCheckFill, BsFillCartPlusFill } from 'react-icons/bs';
 import { ProductContext } from '../../img/ProductContext';
 import { useState, useEffect, useContext } from 'react';
 import Loading from '../../components/Loading';
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import './store.css';
 
 export const Store = () => {
@@ -59,7 +60,8 @@ export const Store = () => {
     if (error) return <p className="text-danger">{error}</p>;
 
     return (
-        <div className="container mt-5 custom-background">
+        <div className="custom-background">
+        <Container className="mt-5 ">
             <h2 className='preco' onClick={pagar} style={{ cursor: 'pointer', color: '#2E4C6D' }}>
                 <p className="total-paragraph">
                     Comprar <BsFillCartCheckFill /> {totalPrice}
@@ -67,59 +69,59 @@ export const Store = () => {
             </h2>
 
             <div className="filter-section mb-4 d-flex align-items-center">
-                <select
+                <Form.Select
                     value={filterType}
                     onChange={(e) => setFilterType(e.target.value)}
-                    className="form-control me-2"
+                    className="me-2"
                     style={{ width: '200px' }}
                 >
                     <option value="">Selecione o Tipo do Produto</option>
                     {uniqueTypes.map((type) => (
                         <option key={type} value={type}>{type}</option>
                     ))}
-                </select>
-                <input
+                </Form.Select>
+                <Form.Control
                     type="number"
                     placeholder="Preço Mínimo"
                     value={minPrice}
                     onChange={(e) => setMinPrice(e.target.value)}
-                    className="form-control me-2"
+                    className="me-2"
                     style={{ width: '150px' }}
                 />
-                <input
+                <Form.Control
                     type="number"
                     placeholder="Preço Máximo"
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(e.target.value)}
-                    className="form-control"
                     style={{ width: '150px' }}
                 />
             </div>
 
-            <div className='row'>
+            <Row>
                 {filteredProducts.map((e) => (
-                    <div key={e.id} className="col-md-4 mb-4 cor2">
-                        <div className="card custom-card">
-                            <img src={formatImageUrl(e.image)} alt={e.name || "Produto"} className="card-img-top cor" />
-                            <div className="card-body">
-                                <h5 className="card-title" style={{ color: '#2E4C6D' }}>{e.name}</h5>
-                                <h5 className="card-text" style={{ color: '#2E4C6D' }}>{e.tipo}</h5>
-                                <h5 className="card-text" style={{ color: '#2E4C6D' }}>{e.description}</h5>
-                                <p className="card-text">
+                    <Col key={e.id} xs={12} sm={6} md={4} className="mb-4">
+                        <Card className="custom-card">
+                            <Card.Img variant="top" src={formatImageUrl(e.image)} alt={e.name || "Produto"} className="cor" />
+                            <Card.Body>
+                                <Card.Title style={{ color: '#2E4C6D' }}>{e.name}</Card.Title>
+                                <Card.Text style={{ color: '#2E4C6D' }}>{e.tipo}</Card.Text>
+                                <Card.Text style={{ color: '#2E4C6D' }}>{e.description}</Card.Text>
+                                <Card.Text>
                                     Preço: kz {e.price} - 
-                                    <button onClick={() => handleClick(e)} className="btn btn-cart ml-2">
+                                    <Button onClick={() => handleClick(e)} className="btn-cart ml-2">
                                         {cart.some(itemCart => itemCart.id === e.id) ? (
                                             <BsFillCartCheckFill />
                                         ) : (
                                             <BsFillCartPlusFill />
                                         )}
-                                    </button>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                                    </Button>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                 ))}
-            </div>
+            </Row>
+        </Container>
         </div>
     );
 };

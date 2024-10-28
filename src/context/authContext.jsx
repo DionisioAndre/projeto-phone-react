@@ -13,11 +13,11 @@ const initialState = {
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'SET_USER':
-            return { ...state, user: action.payload };
+            return { ...state, user: action.payload, error: null };
         case 'SET_ERROR':
             return { ...state, error: action.payload };
         case 'CLEAR_USER':
-            return { ...state, user: null };
+            return { ...state, user: null, error: null };
         case 'SET_REFRESH_TIMEOUT':
             return { ...state, refreshTimeoutId: action.payload };
         case 'CLEAR_REFRESH_TIMEOUT':
@@ -38,7 +38,7 @@ const getLocalStorageItem = (key) => {
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
     const navigate = useNavigate();
-    const [isRegistering, setIsRegistering] = useState(false); // Estado para controlar o registro
+    const [isRegistering, setIsRegistering] = useState(false);
 
     const handleApiError = async (response) => {
         if (!response.ok) {
@@ -49,7 +49,6 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logoutUser = useCallback(() => {
-        console.log('Usuário deslogado');
         localStorage.clear();
         dispatch({ type: 'CLEAR_USER' });
         clearTimeout(state.refreshTimeoutId);
@@ -74,7 +73,6 @@ export const AuthProvider = ({ children }) => {
             dispatch({ type: 'SET_USER', payload: { id: state.user?.id, token: data.access, role: data.role } });
             scheduleTokenRefresh(data.expiresIn);
         } catch (error) {
-            console.error(error);
             logoutUser();
         }
     }, [logoutUser, state.user?.id]);
@@ -86,8 +84,14 @@ export const AuthProvider = ({ children }) => {
     }, [refreshToken, state.refreshTimeoutId]);
 
     const registerUser = useCallback(async (email, username, telefone, eComprador, password, password2) => {
-        setIsRegistering(true); // Desabilita o registro
+        if (isRegistering) return;
+
+        setIsRegistering(true);
         try {
+            if (!email || !username || !telefone || !password || !password2) {
+                throw new Error("Todos os campos são obrigatórios.");
+            }
+
             const response = await fetch('http://127.0.0.1:8000/api/register/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -100,13 +104,12 @@ export const AuthProvider = ({ children }) => {
             navigate('/loginpage');
             alert("Registro bem-sucedido!");
         } catch (error) {
-            console.error("Erro ao registrar:", error);
             alert("Erro ao registrar. Tente novamente.");
             dispatch({ type: 'SET_ERROR', payload: error.message });
         } finally {
-            setIsRegistering(false); // Reabilita o registro
+            setIsRegistering(false);
         }
-    }, [scheduleTokenRefresh, navigate]);
+    }, [scheduleTokenRefresh, navigate, isRegistering]);
 
     const loginUser = useCallback(async (email, password) => {
         try {
@@ -117,23 +120,17 @@ export const AuthProvider = ({ children }) => {
             });
             const data = await handleApiError(response);
             setLocalStorageItem('authToken', data.access);
-            
-            // Decodificar o token para verificar o payload
-            const decodedToken = jwtDecode(data.access);
-            console.log('Payload do Token:', decodedToken);  // Verifique os campos aqui
 
+            const decodedToken = jwtDecode(data.access);
             dispatch({ type: 'SET_USER', payload: { id: decodedToken.id, token: data.access, role: decodedToken.role } });
             scheduleTokenRefresh(data.expiresIn);
         } catch (error) {
-            console.error("Erro ao fazer login:", error);
             dispatch({ type: 'SET_ERROR', payload: error.message });
         }
     }, [scheduleTokenRefresh]);
 
     const isTokenExpired = useCallback((token) => {
-        if (!token) {
-            return true;
-        }
+        if (!token) return true;
         const { exp } = jwtDecode(token);
         return exp * 1000 < Date.now();
     }, []);

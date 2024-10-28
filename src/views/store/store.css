@@ -2,83 +2,100 @@
 html, body {
     height: 100%; /* Garantir que o HTML e o body ocupem 100% da altura */
     margin: 0; /* Remover margens padrão */
-    font-family: 'Arial', sans-serif; /* Defina uma fonte padrão */
-    margin-top: 1rem;
+    font-family: 'Arial', sans-serif; /* Fonte padrão */
+    padding-top: 1rem; /* Espaçamento superior do body */
+    overflow-x: hidden; /* Impede a rolagem horizontal */
 }
 
+/* Estilos do background */
 .custom-background {
     background-color: #E89BA8; /* Cor de fundo do container */
-    padding: 20px; /* Adicione algum espaçamento interno */
-    border-radius: 8px; /* Bordas arredondadas */
+    padding: 1.25rem; /* Espaçamento interno */
+    border-radius: 0.5rem; /* Bordas arredondadas */
     flex: 1; /* Expande para preencher o espaço disponível */
-    margin-top: 8rem;
+    margin-top: 0.1rem;
 }
 
 /* Estilos do container de cartões */
 .container_cards {
     display: flex;
-    gap: 50px; /* Espaçamento entre cartões */
+    gap: 1.25rem; /* Espaçamento entre cartões */
     flex-wrap: wrap; /* Permite que os cartões se movam para a próxima linha */
     justify-content: center; /* Centraliza os cartões */
     align-items: center; /* Alinha os cartões verticalmente */
-    margin-bottom: 70px; /* Espaço abaixo do container de cartões */
+    margin-bottom: 4.375rem; /* Espaço abaixo do container de cartões */
 }
 
+/* Estilos do cartão */
 .container_cards_content {
-    height: 350px; /* Altura do cartão ajustada */
-    width: 250px; /* Largura do cartão ajustada */
+    height: 21.875rem; /* Altura do cartão ajustada */
+    width: 15.625rem; /* Largura do cartão ajustada */
     border: 1px solid rgb(194, 193, 193); /* Borda do cartão */
     display: flex;
     justify-content: space-between; /* Espaçamento entre os itens dentro do cartão */
     flex-direction: column; /* Alinha os itens verticalmente */
     align-items: center; /* Centraliza os itens */
-    padding: 20px; /* Espaçamento interno do cartão */
+    padding: 1.25rem; /* Espaçamento interno do cartão */
+}
+
+/* Estilo da imagem */
+.cor {
+    width: 100%; /* Largura da imagem ajustada */
+    height: auto; /* Mantém a proporção */
+    max-height: 12.5rem; /* Limita a altura da imagem */
+    object-fit: contain; /* Ajusta a imagem para caber no contêiner */
+    border-radius: 0.5rem; /* Borda arredondada, opcional */
 }
 
 /* Estilos do botão */
 button {
-    font-size: 25px; /* Tamanho da fonte do botão */
+    font-size: 1.5625rem; /* Tamanho da fonte do botão */
     background: transparent; /* Fundo transparente */
     border: none; /* Remove a borda do botão */
-    color: #2E4C6D; /* Cor do texto do botão (azul profundo) */
-    cursor: pointer; /* Altera o cursor para indicar que é clicável */
+    color: #2E4C6D; /* Cor do texto do botão */
+    cursor: pointer; /* Indica que é clicável */
 }
 
-/* Estilos para a imagem */
-.cor {
-    width: 200px; /* Largura da imagem ajustada para 100% do card */
-    height: auto; /* Mantém a proporção */
-    max-height: 200px; /* Limita a altura da imagem */
-    object-fit: contain; /* Corta a imagem para preencher o espaço */
-    border-radius: 8px; /* Borda arredondada, opcional */
+/* Estilos da seção de filtro */
+.filter-section {
+    margin-bottom: 1.25rem; /* Espaço abaixo da seção de filtros */
+    display: flex; /* Alinha filtros na mesma linha */
+    flex-wrap: wrap; /* Permite que os filtros se movam para a próxima linha se necessário */
+    gap: 0.625rem; /* Espaçamento entre filtros */
 }
 
 /* Estilos responsivos */
-@media (max-width: 768px) {
+@media (max-width: 48rem) { /* 768px em rem */
     .container_cards {
         flex-direction: column; /* Alinha cartões em coluna em telas menores */
         align-items: center; /* Centraliza os cartões */
     }
 
-    /* Estilos para a imagem */
     .cor {
-        width: 100%; /* Largura da imagem ajustada para 100% do card */
-        height: auto; /* Mantém a proporção */
         max-height: 100%; /* Limita a altura da imagem */
-        object-fit: contain; /* Ajusta a imagem para caber no contêiner sem recortar */
-        border-radius: 8px; /* Borda arredondada, opcional */
+    }
+
+    button {
+        font-size: 1.25rem; /* Reduz o tamanho da fonte do botão em telas menores */
     }
 }
 
+/* Estilo do total */
 .total-paragraph {
     position: fixed;
-    top: 10px;
-    right: 20px;
+    top: 4.5625rem; /* 73px em rem */
+    right: 2.5rem; /* 40px em rem */
     background: #A2C2D4;
-    padding: 2px;
-    border-radius: 5px;
+    padding: 0.125rem; /* 2px em rem */
+    border-radius: 0.3125rem; /* 5px em rem */
     color: #2E4C6D;
     z-index: 2000;
     cursor: pointer;
 }
 
+/* Estilos do cartão customizado */
+.custom-card {
+    background-color: #A2C2D4; /* Azul claro para o cartão */
+    border-radius: 0.5rem; /* Bordas arredondadas */
+    border: 1px solid rgb(194, 193, 193); /* Borda do cartão */
+}

@@ -1,35 +1,77 @@
-/* Carrinho.css */
 
-/* Estilo do fundo do contêiner */
+
+/* Estilos para os cartões de produto */
+.card {
+    transition: transform 0.2s; /* Efeito de hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Aumenta ligeiramente ao passar o mouse */
+}
+
+/* Estilos para o título e texto do cartão */
+.card-title {
+    font-size: 1.25rem; /* Tamanho do título */
+}
+
+.card-text {
+    font-size: 1rem; /* Tamanho do texto do produto */
+}
+
+/* Estilos para os botões */
+.btn {
+    margin-right: 10px; /* Espaço entre os botões */
+}
+
+/* Estilos para mensagens de erro */
+.text-danger {
+    margin-top: 10px; /* Espaçamento acima da mensagem de erro */
+}
+
+/* Estilos para o modal */
+.modal-header {
+    background-color: #2E4C6D; /* Cor de fundo do cabeçalho do modal */
+    color: #FFFFFF; /* Cor do texto do cabeçalho */
+}
+
+.modal-title {
+    font-weight: bold; /* Título em negrito */
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .custom-background {
+        padding: 10px; /* Reduzir padding em telas menores */
+    }
+
+    .card {
+        margin-bottom: 15px; /* Margem inferior para espaçamento */
+    }
+
+    .card-title {
+        font-size: 1.1rem; /* Reduzir o tamanho do título em mobile */
+    }
+
+    .card-text {
+        font-size: 0.9rem; /* Reduzir o tamanho do texto em mobile */
+    }
+
+    .btn {
+        width: 100%; /* Botões ocupando toda a largura */
+        margin-bottom: 10px; /* Espaço entre botões em mobile */
+    }
+}
 .custom-background {
-    background-color: #E89BA8; /* Rosa claro */
-    padding: 20px; /* Espaçamento interno */
+    background-color: #E89BA8; /* Cor de fundo do container */
+    padding: 20px; /* Adicione algum espaçamento interno */
     border-radius: 8px; /* Bordas arredondadas */
+    flex: 1; /* Expande para preencher o espaço disponível */
+    margin-top: 0.1rem;
 }
-
-/* Estilo do cartão */
-.custom-card {
-    background-color: #A2C2D4; /* Azul claro para o cartão */
-    border-radius: 8px; /* Bordas arredondadas */
-    border: 1px solid rgb(194, 193, 193); /* Borda do cartão */
-}
-
-/* Estilo do botão */
-.btn-cart {
-    background-color: #2E4C6D; /* Azul profundo */
-    color: #FFFFFF; /* Texto branco */
-}
-
-/* Estilo da imagem */
 .cor {
-    width: 100%; /* Largura da imagem ajustada */
+    width: 200px; /* Largura da imagem ajustada para 100% do card */
     height: auto; /* Mantém a proporção */
     max-height: 200px; /* Limita a altura da imagem */
-    object-fit: cover; /* Corta a imagem para preencher o espaço */
-    border-radius: 8px; /* Bordas arredondadas */
-}
-
-.disabled {
-    opacity: 0.6; /* Para deixar o botão menos visível */
-    cursor: not-allowed; /* Muda o cursor para indicar que não é clicável */
+    object-fit: contain; /* Corta a imagem para preencher o espaço */
+    border-radius: 8px; /* Borda arredondada, opcional */
 }

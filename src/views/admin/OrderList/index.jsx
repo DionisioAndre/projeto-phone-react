@@ -1,11 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../../../context/authContext';
-import { Modal, Button } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
+import { Modal, Button,Container } from 'react-bootstrap';
+
 import Loading from '../../../components/Loading';
+import { logoutUser } from '../../../services/localStorege';
+import './OrderList.css';
 
 const OrderList = () => {
     const { user } = useContext(AuthContext);
+const navigate = useNavigate();
     const [orders, setorders] = useState([]);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
@@ -31,7 +36,14 @@ const OrderList = () => {
                 setorders(response.data);
             } catch (err) {
                 setError('Erro ao buscar produtos.');
-                console.error(err);
+                if(err.response.status==401){
+                    alert("A sessao expirou! por favor faça o iogin")
+                    logoutUser
+                    navigate('/loginpage');
+                } else{
+                    alert(error);
+                }
+               
             } finally {
                 setLoading(false);
             }
@@ -53,7 +65,14 @@ const OrderList = () => {
                 setorders(orders.filter(order => order.id !== orderId));
             } catch (err) {
                 setError('Erro ao apagar produto.');
-                console.error(err);
+                if(err.response.status==401){
+                    alert("A sessao expirou! por favor faça o iogin")
+                    logoutUser
+                    navigate('/loginpage');
+                } else{
+                    alert(error);
+                }
+               
             }
         }
     };
@@ -93,7 +112,14 @@ const OrderList = () => {
             await fetchorders();
         } catch (err) {
             setError('Erro ao atualizar produto.');
-            console.error(err);
+            if(err.response.status==401){
+                alert("A sessao expirou! por favor faça o iogin")
+                logoutUser
+                navigate('/loginpage');
+            } else{
+                alert(error);
+            }
+           
         }
     };
 
@@ -109,15 +135,23 @@ const OrderList = () => {
         if (!user) return;
 
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/routerorders/', {
+            const response = await axios.get('http://127.0.0.1:8000/api/routeradmin/orders/', {
                 headers: {
                     Authorization: `Bearer ${user.token}`
                 }
             });
+            
             setorders(response.data);
         } catch (err) {
             setError('Erro ao buscar produtos.');
-            console.error(err);
+            if(err.response.status==401){
+                alert("A sessao expirou! por favor faça o iogin")
+                logoutUser
+                navigate('/loginpage');
+            } else{
+                alert(error);
+            }
+           
         }
     };
 
@@ -126,6 +160,8 @@ const OrderList = () => {
     }
 
     return (
+        <div className="custom-background">
+        <Container className="mt-5">
         <div>
             <h2>Lista de Produtos</h2>
             {error && <p className="text-danger">{error}</p>}
@@ -133,8 +169,10 @@ const OrderList = () => {
           {orders.map(order => (
             <div key={order.id}className="col-md-4 mb-4">
               <h3>Pedido ID: {order.id}</h3>
-              <img src={formatImageUrl(order.image)} alt="imagem"className="card-img-top" />
-              <p className="card-text">Preço: R${order.price}</p>
+              <h3>Pedido Buyer: {order.buyer}</h3>
+              <img src={formatImageUrl(order.image)} alt="imagem"className="card-img-top cor" />
+              <p className="card-text">produto:{order.product}</p>
+              <p className="card-text">Preço: KZ{order.price}</p>
               <p>Quantidade: {order.quantity}</p>
               <p>Data do Pedido: {new Date(order.created_at).toLocaleDateString()}</p>
               <Button variant="danger" onClick={() => handleDelete(order.id)}>Apagar</Button>
@@ -202,6 +240,8 @@ const OrderList = () => {
                 </Modal.Body>
             </Modal>
         </div>
+        </Container>
+    </div>
     );
 };
 

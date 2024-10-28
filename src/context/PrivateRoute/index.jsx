@@ -12,7 +12,6 @@ const PrivateRoute = ({ children, isSeller }) => {
         // Se não houver usuário, redireciona para a página de login
         if(token){
             const decoded = jwtDecode(token);
-            console.log("context decoded.is_staff "+decoded.is_staff)
             const isAdmin = () => (decoded.is_staff)
         }
         if (!user) {

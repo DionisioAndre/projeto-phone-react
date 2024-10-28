@@ -1,17 +1,32 @@
+/* Register.css */
+
+/* Estilos gerais */
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Estilo para o botão personalizado */
 .custom-btn {
-    background-color: #2E4C6D; /* Azul profundo */
-    color: #FFFFFF; /* Texto branco */
-    border: none; /* Remove a borda */
+    background-color: #007bff; /* Cor do botão */
+    border: none; /* Remove a borda padrão */
 }
 
-.custom-btn:hover {
-    background-color: #E89BA8; /* Muda para rosa claro ao passar o mouse */
-    color: #2E4C6D; /* Texto em azul profundo ao passar o mouse */
+/* Mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px; /* Menos padding em telas menores */
+    }
+    
+    .custom-btn {
+        width: 100%; /* Botão ocupa toda a largura */
+    }
 }
 
-.alert {
-    background-color: #f8d7da; /* Fundo claro para mensagem de erro */
-    color: #721c24; /* Texto escuro */
-    border: 1px solid #f5c6cb; /* Borda do alerta */
-    border-radius: 5px; /* Bordas arredondadas */
+/* Desktop */
+@media (min-width: 769px) {
+    .container {
+        padding: 20px; /* Mais padding em telas maiores */
+    }
 }

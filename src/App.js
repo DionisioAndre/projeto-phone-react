@@ -22,6 +22,7 @@ import ProductManagement from "./views/admin/ProductManagement";
 import OrderList from "./views/admin/OrderList";
 import AdminDashboard from './views/admin/AdminDashboard';
 import UserManagement from './views/admin/UserManagement';
+import CreateSuperUser from './views/admin/CreateSuperUser';
 const App = () => {
     return (
         <BrowserRouter>
@@ -45,6 +46,7 @@ const App = () => {
                     <Route element={<AuthProvider2><ProductManagement /> </AuthProvider2> } path="/admin/products" />
                     <Route element={<AuthProvider2><OrderList /> </AuthProvider2> } path="/admin/orders" />
                     <Route element={<UserManagement />} path="/UserManagement" />
+                    <Route element={<CreateSuperUser />} path="/AdminDashboard/CreateSuperUser" />
                 </Routes>
                 <Footer />
             </AuthProvider>

@@ -1,0 +1,77 @@
+/* CreateSuperUser.css */
+
+/* Estilos gerais */
+.card {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #A2C2D4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.custom-background {
+    background-color: #E89BA8; /* Cor de fundo do container */
+    padding: 20px; /* Adicione algum espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+    flex: 1; /* Expande para preencher o espaço disponível */
+    margin-top: 0.1rem;
+}
+
+.card h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.alert {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Bootstrap primary color */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary {
+    border-radius: 5px;
+}
+
+.btn-primary:disabled {
+    background-color: #b3d7ff; /* Lighter primary color for disabled state */
+    border-color: #b3d7ff;
+}
+
+.spinner-border {
+    margin-right: 5px;
+}
+
+/* Estilos específicos para dispositivos móveis */
+@media (max-width: 768px) {
+    .card {
+        padding: 15px; /* Reduz o padding em dispositivos móveis */
+        margin: 10px; /* Adiciona uma margem em torno do card */
+    }
+
+    .form-group {
+        margin-bottom: 15px; /* Aumenta a margem entre os grupos do formulário */
+    }
+
+    .form-label {
+        font-size: 1rem; /* Ajusta o tamanho da fonte da etiqueta */
+    }
+
+    .form-control {
+        font-size: 1rem; /* Ajusta o tamanho da fonte do campo de entrada */
+    }
+
+    .btn-primary {
+        width: 100%; /* Faz o botão ocupar toda a largura disponível */
+    }
+}

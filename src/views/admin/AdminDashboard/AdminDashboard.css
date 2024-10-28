@@ -1,0 +1,7 @@
+.custom-background {
+    background-color: #E89BA8; /* Cor de fundo do container */
+    padding: 20px; /* Adicione algum espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+    flex: 1; /* Expande para preencher o espaço disponível */
+    margin-top: 0.1rem;
+}

@@ -16,7 +16,6 @@ export const ProductProvider = ({ children }) => {
                 setProducts(response.data);
             } catch (err) {
                 setError('Erro ao buscar produtos.');
-                console.error(err);
             } finally {
                 setLoading(false);
             }

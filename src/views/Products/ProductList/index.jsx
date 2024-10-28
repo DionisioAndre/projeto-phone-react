@@ -1,11 +1,15 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import AuthContext from '../../../context/authContext';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button,Container } from 'react-bootstrap';
 import Loading from '../../../components/Loading';
+import { logoutUser } from '../../../services/localStorege';
+import './ProductList.css';
 
 const ProductList = () => {
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
@@ -17,26 +21,56 @@ const ProductList = () => {
     const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            if (!user) return;
+    // Função para sanitizar inputs
+    const sanitizeInput = (input) => {
+        return input.replace(/<script.*?>.*?<\/script>/gi, '').trim();
+    };
 
-            setLoading(true);
-            try {
-                const response = await axios.get('http://127.0.0.1:8000/api/routerproducts/', {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`
-                    }
-                });
-                setProducts(response.data);
-            } catch (err) {
-                setError('Erro ao buscar produtos.');
-                console.error(err);
-            } finally {
-                setLoading(false);
+    const handleImageChange = useCallback((e) => {
+        const file = e.target.files[0];
+
+        if (!file) {
+            setError('Por favor, selecione um arquivo de imagem.');
+            return;
+        }
+
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validImageTypes.includes(file.type)) {
+            setError('Por favor, selecione um arquivo de imagem válido (JPEG, PNG, GIF).');
+            setNewImage(null);
+            return;
+        }
+
+        setNewImage(file);
+        setError('');
+    }, []);
+
+    const fetchProducts = async () => {
+        if (!user) return;
+
+        setLoading(true);
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/routerproducts/', {
+                headers: {
+                    Authorization: `Bearer ${user.token}`
+                }
+            });
+            setProducts(response.data);
+        } catch (err) {
+            setError('Erro ao buscar produtos.');
+            if (err.response && err.response.status === 401) {
+                alert("A sessão expirou! Por favor, faça o login.");
+                logoutUser();
+                navigate('/loginpage');
+            } else {
+                alert(err.message);
             }
-        };
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchProducts();
     }, [user]);
 
@@ -53,7 +87,13 @@ const ProductList = () => {
                 setProducts(products.filter(product => product.id !== productId));
             } catch (err) {
                 setError('Erro ao apagar produto.');
-                console.error(err);
+                if (err.response && err.response.status === 401) {
+                    alert("A sessão expirou! Por favor, faça o login.");
+                    logoutUser();
+                    navigate('/loginpage');
+                } else {
+                    alert(err.message);
+                }
             }
         }
     };
@@ -65,10 +105,7 @@ const ProductList = () => {
         setPrice(product.price);
         setDescription(product.description);
         setShowModal(true);
-    };
-
-    const handleImageChange = (e) => {
-        setNewImage(e.target.files[0]);
+        setNewImage(null);
     };
 
     const handleSubmit = async (e) => {
@@ -76,13 +113,13 @@ const ProductList = () => {
 
         const formData = new FormData();
         if (newImage) formData.append('image', newImage);
-        formData.append('name', name);
-        formData.append('tipo', tipo);
+        formData.append('name', sanitizeInput(name));
+        formData.append('tipo', sanitizeInput(tipo));
         formData.append('price', price);
-        formData.append('description', description);
+        formData.append('description', sanitizeInput(description));
 
         try {
-            await axios.put(`http://127.0.0.1:8000/api/ProductUpdateView/${selectedProduct.id}/`, formData, {
+            await axios.put(`http://127.0.0.1:8000/api/product-update/${selectedProduct.id}/`, formData, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                     'Content-Type': 'multipart/form-data',
@@ -93,7 +130,13 @@ const ProductList = () => {
             await fetchProducts();
         } catch (err) {
             setError('Erro ao atualizar produto.');
-            console.error(err);
+            if (err.response && err.response.status === 401) {
+                alert("A sessão expirou! Por favor, faça o login.");
+                logoutUser();
+                navigate('/loginpage');
+            } else {
+                alert(err.message);
+            }
         }
     };
 
@@ -105,28 +148,13 @@ const ProductList = () => {
         setDescription('');
     };
 
-    const fetchProducts = async () => {
-        if (!user) return;
-
-        try {
-            const response = await axios.get('http://127.0.0.1:8000/api/routerproducts/', {
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
-            setProducts(response.data);
-        } catch (err) {
-            setError('Erro ao buscar produtos.');
-            console.error(err);
-        }
-    };
-
     if (loading) {
         return <Loading />;
     }
 
     return (
-        <div>
+        <div className="custom-background">
+            <Container className="mt-5">
             <h2>Lista de Produtos</h2>
             {error && <p className="text-danger">{error}</p>}
             <div className="row">
@@ -136,7 +164,7 @@ const ProductList = () => {
                             <img 
                                 src={formatImageUrl(product.image)} 
                                 alt={product.name} 
-                                className="card-img-top" 
+                                className="cor" 
                             />
                             <div className="card-body">
                                 <h5 className="card-title">{product.name}</h5>
@@ -208,6 +236,8 @@ const ProductList = () => {
                     </form>
                 </Modal.Body>
             </Modal>
+        </Container>
+
         </div>
     );
 };

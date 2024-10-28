@@ -1,12 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react'; 
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import AuthContext from '../../../context/authContext';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Card, Spinner } from 'react-bootstrap';
 import Loading from '../../../components/Loading';
+import { logoutUser } from '../../../services/localStorege';
+import './ProductForm.css';
 
 const ProductManagement = () => {
     const { user } = useContext(AuthContext);
-    const [orders, setorders] = useState([]);
+    const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -17,27 +21,37 @@ const ProductManagement = () => {
     const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(true);
 
+    const sanitizeInput = (input) => {
+        return input.replace(/<script.*?>.*?<\/script>/gi, '').trim(); // Remove scripts
+    };
+
     useEffect(() => {
-        const fetchorders = async () => {
+        const fetchProducts = async () => {
             if (!user) return;
 
             setLoading(true);
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/routeradmin/orders/', {
+                const response = await axios.get('http://127.0.0.1:8000/api/routeradmin/products/', {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }
                 });
-                setorders(response.data);
+                setProducts(response.data);
             } catch (err) {
                 setError('Erro ao buscar produtos.');
-                console.error(err);
+                if (err.response.status === 401) {
+                    alert("A sessão expirou! Por favor, faça o login");
+                    logoutUser();
+                    navigate('/loginpage');
+                } else {
+                    alert(error);
+                }
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchorders();
+        fetchProducts();
     }, [user]);
 
     const formatImageUrl = (url) => url.replace('/media/', '/api/media/');
@@ -45,15 +59,21 @@ const ProductManagement = () => {
     const handleDelete = async (productId) => {
         if (window.confirm('Tem certeza que deseja apagar este produto?')) {
             try {
-                await axios.delete(`http://127.0.0.1:8000/api/routerorders/${productId}/`, {
+                await axios.delete(`http://127.0.0.1:8000/api/routeradmin/products/${productId}/`, {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }
                 });
-                setorders(orders.filter(product => product.id !== productId));
+                setProducts(products.filter(product => product.id !== productId));
             } catch (err) {
                 setError('Erro ao apagar produto.');
-                console.error(err);
+                if (err.response.status === 401) {
+                    alert("A sessão expirou! Por favor, faça o login");
+                    logoutUser();
+                    navigate('/loginpage');
+                } else {
+                    alert(error);
+                }
             }
         }
     };
@@ -67,22 +87,35 @@ const ProductManagement = () => {
         setShowModal(true);
     };
 
-    const handleImageChange = (e) => {
-        setNewImage(e.target.files[0]);
-    };
+    const handleImageChange = useCallback((e) => {
+        const file = e.target.files[0];
+        if (!file) {
+            setError('Por favor, selecione um arquivo de imagem.');
+            return;
+        }
+
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validImageTypes.includes(file.type)) {
+            setError('Por favor, selecione um arquivo de imagem válido (JPEG, PNG, GIF).');
+            setNewImage(null); // Limpa a imagem se for inválida
+            return;
+        }
+
+        setNewImage(file);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
         if (newImage) formData.append('image', newImage);
-        formData.append('name', name);
-        formData.append('tipo', tipo);
+        formData.append('name', sanitizeInput(name)); // Sanitiza o input
+        formData.append('tipo', sanitizeInput(tipo)); // Sanitiza o input
         formData.append('price', price);
-        formData.append('description', description);
+        formData.append('description', sanitizeInput(description)); // Sanitiza o input
 
         try {
-            await axios.put(`http://127.0.0.1:8000/api/ProductUpdateView/${selectedProduct.id}/`, formData, {
+            await axios.put(`http://127.0.0.1:8000/api/product-update/${selectedProduct.id}`, formData, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                     'Content-Type': 'multipart/form-data',
@@ -90,10 +123,16 @@ const ProductManagement = () => {
             });
             setShowModal(false);
             resetForm();
-            await fetchorders();
+            await fetchProducts();
         } catch (err) {
             setError('Erro ao atualizar produto.');
-            console.error(err);
+            if (err.response.status === 401) {
+                alert("A sessão expirou! Por favor, faça o login");
+                logoutUser();
+                navigate('/loginpage');
+            } else {
+                alert(error);
+            }
         }
     };
 
@@ -105,47 +144,33 @@ const ProductManagement = () => {
         setDescription('');
     };
 
-    const fetchorders = async () => {
-        if (!user) return;
-
-        try {
-            const response = await axios.get('http://127.0.0.1:8000/api/routerorders/', {
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
-            setorders(response.data);
-        } catch (err) {
-            setError('Erro ao buscar produtos.');
-            console.error(err);
-        }
-    };
-
     if (loading) {
         return <Loading />;
     }
 
     return (
-        <div>
+        <div className="custom-background" >
+        <div className="container mt-5">
             <h2>Lista de Produtos</h2>
             {error && <p className="text-danger">{error}</p>}
             <div className="row">
-                {orders.map(product => (
+                {products.map(product => (
                     <div key={product.id} className="col-md-4 mb-4">
-                        <div className="card">
-                            <img 
+                        <Card>
+                            <Card.Img 
+                                variant="top" 
                                 src={formatImageUrl(product.image)} 
                                 alt={product.name} 
-                                className="card-img-top" 
+                                className="cor"
                             />
-                            <div className="card-body">
-                                <h5 className="card-title">{product.name}</h5>
-                                <p className="card-text">{product.tipo}</p>
-                                <p className="card-text">Preço: R$ {product.price}</p>
+                            <Card.Body>
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Text>{product.tipo}</Card.Text>
+                                <Card.Text>Preço: R$ {product.price}</Card.Text>
                                 <Button variant="danger" onClick={() => handleDelete(product.id)}>Apagar</Button>
                                 <Button variant="primary" onClick={() => handleUpdate(product)}>Atualizar</Button>
-                            </div>
-                        </div>
+                            </Card.Body>
+                        </Card>
                     </div>
                 ))}
             </div>
@@ -208,6 +233,7 @@ const ProductManagement = () => {
                     </form>
                 </Modal.Body>
             </Modal>
+        </div>
         </div>
     );
 };

@@ -8,7 +8,7 @@ export const setItem = (key, value) => {
     try {
         localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-        console.error("Erro ao armazenar o item no localStorage:", error);
+        alert(error)
     }
 };
 
@@ -22,7 +22,7 @@ export const getItem = (key) => {
         const item = localStorage.getItem(key);
         return item ? JSON.parse(item) : null;
     } catch (error) {
-        console.error("Erro ao recuperar o item do localStorage:", error);
+        alert(error)
         return null;
     }
 };
@@ -35,6 +35,6 @@ export const logoutUser = (key) => {
     try {
         localStorage.logoutUser(key);
     } catch (error) {
-        console.error("Erro ao remover o item do localStorage:", error);
+        alert(error)
     }
 };

@@ -1,0 +1,93 @@
+/* OrderList.css */
+
+/* Estilos gerais */
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.text-danger {
+    color: red;
+}
+
+.row {
+    margin: 0 -15px;
+}
+
+.col-md-4 {
+    padding: 15px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.card-text {
+    margin: 5px 0;
+}
+
+.btn-danger {
+    margin-top: 10px;
+}
+
+/* Estilos para o modal */
+.modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* Estilos para dispositivos móveis */
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column; /* Faz os itens ocuparem toda a largura */
+    }
+
+    .col-md-4 {
+        width: 100%; /* Define a largura como 100% */
+        margin-bottom: 20px; /* Adiciona espaço entre os itens */
+    }
+
+    .card {
+        margin: 10px 0; /* Adiciona margens entre os cards */
+    }
+
+    .btn-danger {
+        width: 100%; /* Botão ocupa toda a largura */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Ajusta o tamanho da fonte */
+    }
+
+    .modal-body {
+        padding: 15px; /* Reduz o padding no modal */
+    }
+}
+.custom-background {
+    background-color: #E89BA8; /* Cor de fundo do container */
+    padding: 20px; /* Adicione algum espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+    flex: 1; /* Expande para preencher o espaço disponível */
+    margin-top: 0.1rem;
+}
+.cor {
+    width: 200px; /* Largura da imagem ajustada para 100% do card */
+    height: auto; /* Mantém a proporção */
+    max-height: 200px; /* Limita a altura da imagem */
+    object-fit: contain; /* Corta a imagem para preencher o espaço */
+    border-radius: 8px; /* Borda arredondada, opcional */
+}

@@ -14,7 +14,6 @@ export const AuthProvider2 = ({ children }) => {
         return navigate("/loginpage")
     }
     const decoded = jwtDecode(token);
-    console.log("context decoded.is_staff "+decoded.is_staff)
 
     const isAdmin = () => (decoded.is_staff) // Verifica se o usuário é admin
     const isSeller=()=>(decoded.eComprador)

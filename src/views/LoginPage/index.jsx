@@ -1,36 +1,43 @@
 import { useContext, useState } from "react"; 
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/authContext";
-import Loading from '../../components/Loading'; // Certifique-se de que o caminho está correto
+import Loading from '../../components/Loading';
 import "./LoginPage.css";
+
+// Função de sanitização simples para XSS
+const sanitizeInput = (input) => {
+    return input.replace(/<[^>]*>/g, ''); // Remove todas as tags HTML
+};
 
 function LoginPage() {
     const { loginUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [loadingTimeout, setLoadingTimeout] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(""); // Para armazenar mensagens de erro
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = e.target;
 
-        if (email.value.length > 0 && password.value.length > 0) {
+        // Sanitizar entradas
+        const sanitizedEmail = sanitizeInput(email.value.trim());
+        const sanitizedPassword = sanitizeInput(password.value.trim());
+
+        if (sanitizedEmail.length > 0 && sanitizedPassword.length > 0) {
             setLoading(true);
             setLoadingTimeout(false);
-            setErrorMessage(""); // Reseta a mensagem de erro
+            setErrorMessage("");
 
             const timeoutId = setTimeout(() => {
                 setLoadingTimeout(true);
             }, 5000);
 
             try {
-                await loginUser(email.value, password.value);
-                console.log("Login bem-sucedido");
+                await loginUser(sanitizedEmail, sanitizedPassword);
                 navigate("/");
             } catch (error) {
-                console.error("Erro ao fazer login:", error);
-                setErrorMessage("Credenciais inválidas. Tente novamente."); // Exibe mensagem de erro
+                setErrorMessage("Credenciais inválidas. Tente novamente.");
             } finally {
                 clearTimeout(timeoutId);
                 setLoading(false);
@@ -54,7 +61,8 @@ function LoginPage() {
     }
 
     return (
-        <div className="container mt-5 custom-background">
+        <div className="custom-background">
+        <div className="container mt-5">
             <div className="row d-flex justify-content-center align-items-center h-100">
                 <div className="col col-xl-6">
                     <div className="card custom-card shadow">
@@ -65,7 +73,7 @@ function LoginPage() {
                             <div className="col-md-6 d-flex align-items-center">
                                 <div className="card-body">
                                     <h2 className="text-center mb-4 text-primary">Bem-vindo ao <b>Desphis</b></h2>
-                                    {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Exibe a mensagem de erro */}
+                                    {errorMessage && <p className="text-danger">{sanitizeInput(errorMessage)}</p>}
                                     <form onSubmit={handleSubmit}>
                                         <div className="form-outline mb-4">
                                             <input 
@@ -74,6 +82,8 @@ function LoginPage() {
                                                 className="form-control" 
                                                 placeholder="Email" 
                                                 required 
+                                                pattern="[a0-zA9-Z]+@[a-z]+\.[a-zA-Z]{2,}" 
+                                                aria-required="true" 
                                             />
                                         </div>
                                         <div className="form-outline mb-4">
@@ -83,6 +93,7 @@ function LoginPage() {
                                                 className="form-control" 
                                                 placeholder="Senha" 
                                                 required 
+                                                aria-required="true" 
                                             />
                                         </div>
                                         <button className="btn btn-primary btn-block" type="submit">Entrar</button>
@@ -100,6 +111,7 @@ function LoginPage() {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

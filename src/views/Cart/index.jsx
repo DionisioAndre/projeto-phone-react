@@ -1,4 +1,4 @@
-import { getItem, setItem } from '../../services/localStorege'; 
+import { getItem, logoutUser, setItem } from '../../services/localStorege'; 
 import { useCallback, useEffect, useState } from "react";
 import { BsFillCartDashFill } from "react-icons/bs";
 import axios from "axios";
@@ -20,6 +20,10 @@ export const Cart = () => {
     const token = localStorage.getItem('authToken');
     const d  = jwtDecode(token);
 
+    const sanitizeInput = (input) => {
+        return input.replace(/<script.*?>.*?<\/script>/gi, '').trim(); // Remove scripts
+    };
+
     const handleChange = useCallback((e, id) => {
         const { name, value } = e.target;
         setFormOther(prevData => ({
@@ -31,8 +35,6 @@ export const Cart = () => {
             }
         }));
     }, []);
-
-    
 
     const removeItem = (obj) => {
         const updatedData = data.filter((e) => e.id !== obj.id);
@@ -48,6 +50,7 @@ export const Cart = () => {
     useEffect(() => {
         setItem('carrinhoXt', data);
     }, [data]);
+
     const formatImageUrl = (url) => url.replace('/media/', '/api/media/');
     const urlToFile = async (url, filename, mimeType) => {
         const res = await fetch(url);
@@ -56,7 +59,6 @@ export const Cart = () => {
     };
 
     const enviar = async (e) => {
-        console.log(e)
         const currentForm = formOther[e.id] || {};
         if (!currentForm.quantity || !currentForm.prestacao) {
             alert("Por favor, preencha a quantidade e a prestação.");
@@ -78,7 +80,6 @@ export const Cart = () => {
                 prestacao: Number(currentForm.prestacao),
                 img: imgFile
             };
-            console.log(newItem)
             setFormData(prevFormData => [...prevFormData, newItem]);
             calculateTotal();
         }
@@ -106,6 +107,12 @@ export const Cart = () => {
             if (!token) throw new Error("Token de autenticação não encontrado.");
 
             const { user_id: buyerId } = jwtDecode(token);
+            
+            if (formData.length === 0) {
+                alert("Erro! Criou pedido vazio, por favor adicione antes de enviar");
+                return;
+            }
+
             for (const item of formData) {
                 const formDataToSend = new FormData();
                 formDataToSend.append('buyer', buyerId);
@@ -113,9 +120,8 @@ export const Cart = () => {
                 formDataToSend.append('price', item.price);
                 formDataToSend.append('prestacao', item.prestacao);
                 formDataToSend.append('quantity', item.quantity);
-                const image=item.img
+                const image = item.img;
                 formDataToSend.append('image', image);
-                console.log(image)
 
                 await axios.post('http://127.0.0.1:8000/api/routerorders/', formDataToSend, {
                     headers: {
@@ -123,17 +129,23 @@ export const Cart = () => {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                console.log(formDataToSend.getAll)
             }
             
-            console.log("Pedido criado com sucesso");
+            alert("Pedido criado com sucesso");
             navigate('/');
 
         } catch (err) {
             const errorMessage = err.response?.data?.error || "Ocorreu um erro ao criar a ordem.";
             setError(errorMessage);
-            console.error('Erro ao enviar pedido:', errorMessage);
-            alert(errorMessage);
+            
+            if (err.response && err.response.status === 401) {
+                alert("A sessão expirou! Por favor, faça o login.");
+                logoutUser();
+                navigate('/loginpage');
+            } else {
+                alert(errorMessage);
+            }
+            
         } finally {
             clearTimeout(timeoutId);
             setLoading(false);
@@ -154,6 +166,7 @@ export const Cart = () => {
     }
 
     return (
+        <div className="custom-background">
         <div className="container mt-5 custom-background">
             <div className="row">
                 {data.map((e) => (
@@ -222,7 +235,7 @@ export const Cart = () => {
             </div>
             {formData.length > 1 && (
                 <div className="mt-3">
-                    <h5>Total de todos os produtos: R$ {totalPrice.toFixed(2)}</h5>
+                    <h5>Tudo pronto!</h5>
                 </div>
             )}
             <form onSubmit={handleSubmit} className="mt-4">
@@ -231,6 +244,7 @@ export const Cart = () => {
                 </button>
                 {error && <p className="text-danger mt-2">{error}</p>}
             </form>
+        </div>
         </div>
     );
 };

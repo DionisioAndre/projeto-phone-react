@@ -1,0 +1,23 @@
+/* Estilos gerais */
+h2 {
+    color: #343a40; /* Cor do título */
+}
+
+/* Estilo para mensagens de erro e sucesso */
+.text-danger {
+    color: #dc3545; /* Cor vermelha para erro */
+}
+
+.text-success {
+    color: #28a745; /* Cor verde para sucesso */
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 1.5rem; /* Ajusta o tamanho do título para telas menores */
+    }
+    .form-control {
+        font-size: 14px; /* Tamanho do texto do input */
+    }
+}

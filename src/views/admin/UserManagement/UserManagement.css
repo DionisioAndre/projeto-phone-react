@@ -1,0 +1,46 @@
+/* Estilos gerais */
+.custom-card {
+    background-color: #A2C2D4; /* Cor de fundo do cartão */
+    padding: 10px;
+    border-radius: 5px;
+}
+.custom-background {
+    background-color: #E89BA8; /* Rosa claro */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+}
+
+/* Estilos para a tabela */
+.table {
+    margin-top: 10px;
+}
+
+/* Estilos para as mensagens de erro */
+.text-danger {
+    margin-top: 10px; /* Espaçamento acima da mensagem de erro */
+}
+
+/* Estilos para o modal */
+.modal-header {
+    background-color: #2E4C6D; /* Cor de fundo do cabeçalho do modal */
+    color: #FFFFFF; /* Cor do texto do cabeçalho */
+}
+
+.modal-title {
+    font-weight: bold; /* Título em negrito */
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .custom-card {
+        padding: 10px; /* Reduzir padding em telas menores */
+    }
+
+    .form-label {
+        font-size: 14px; /* Tamanho do texto do label */
+    }
+
+    .form-control {
+        font-size: 14px; /* Tamanho do texto do input */
+    }
+}
