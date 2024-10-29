@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         try {
-            const response = await fetch('pagapouco-app.herokuapp.com/api/refresh-token/', {
+            const response = await fetch('https://pagapouco.onrender.com/api/refresh-token/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ refresh: refreshTokenValue }),
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
                 throw new Error("Todos os campos são obrigatórios.");
             }
 
-            const response = await fetch('pagapouco-app.herokuapp.com/api/register/', {
+            const response = await fetch('https://pagapouco.onrender.com/api/register/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, username, telefone, eComprador, password, password2 }),
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }) => {
 
     const loginUser = useCallback(async (email, password) => {
         try {
-            const response = await fetch('pagapouco-app.herokuapp.com/api/token/', {
+            const response = await fetch('https://pagapouco.onrender.com/api/token/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
