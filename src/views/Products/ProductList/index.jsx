@@ -50,7 +50,7 @@ const ProductList = () => {
 
         setLoading(true);
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/routerproducts/', {
+            const response = await axios.get('https://pagapouco.onrender.com/api/routerproducts/', {
                 headers: {
                     Authorization: `Bearer ${user.token}`
                 }
@@ -79,7 +79,7 @@ const ProductList = () => {
     const handleDelete = async (productId) => {
         if (window.confirm('Tem certeza que deseja apagar este produto?')) {
             try {
-                await axios.delete(`http://127.0.0.1:8000/api/routerproducts/${productId}/`, {
+                await axios.delete(`https://pagapouco.onrender.com/api/routerproducts/${productId}/`, {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }
@@ -119,7 +119,7 @@ const ProductList = () => {
         formData.append('description', sanitizeInput(description));
 
         try {
-            await axios.put(`http://127.0.0.1:8000/api/product-update/${selectedProduct.id}/`, formData, {
+            await axios.put(`https://pagapouco.onrender.com/api/product-update/${selectedProduct.id}/`, formData, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                     'Content-Type': 'multipart/form-data',

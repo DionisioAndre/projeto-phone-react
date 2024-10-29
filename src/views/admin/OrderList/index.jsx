@@ -28,7 +28,7 @@ const OrderList = () => {
 
             setLoading(true);
             try {
-                const response = await axios.get('pagapouco-app.herokuapp.com/api/routeradmin/orders/', {
+                const response = await axios.get('https://pagapouco.onrender.com/api/routeradmin/orders/', {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }
@@ -56,7 +56,7 @@ const OrderList = () => {
     const handleDelete = async (orderId) => {
         if (window.confirm('Tem certeza que deseja apagar este produto?')) {
             try {
-                await axios.delete(`pagapouco-app.herokuapp.com/api/routerorders/${orderId}/`, {
+                await axios.delete(`https://pagapouco.onrender.com/api/routeradmin/orders/${orderId}/`, {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }
@@ -99,7 +99,7 @@ const OrderList = () => {
         formData.append('description', description);
 
         try {
-            await axios.put(`pagapouco-app.herokuapp.com/api/orderUpdateView/${selectedorder.id}/`, formData, {
+            await axios.put(`https://pagapouco.onrender.com/api/orderUpdateView/${selectedorder.id}/`, formData, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                     'Content-Type': 'multipart/form-data',
@@ -132,7 +132,7 @@ const OrderList = () => {
         if (!user) return;
 
         try {
-            const response = await axios.get('pagapouco-app.herokuapp.com/api/routeradmin/orders/', {
+            const response = await axios.get('https://pagapouco.onrender.com/api/routeradmin/orders/', {
                 headers: {
                     Authorization: `Bearer ${user.token}`
                 }

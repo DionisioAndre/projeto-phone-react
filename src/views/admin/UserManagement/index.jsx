@@ -24,7 +24,7 @@ const UserManagement = () => {
         if (!user) return;
         setLoading(true);
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/routeradmin/users/", {
+            const response = await axios.get("https://pagapouco.onrender.com/api/routeradmin/users/", {
                 headers: { Authorization: `Bearer ${user.token}` }
             });
             setUsers(response.data);
@@ -48,7 +48,7 @@ const UserManagement = () => {
     const handleDelete = async (userId) => {
         if (window.confirm('Tem certeza que deseja apagar este usuário?')) {
             try {
-                await axios.delete(`http://127.0.0.1:8000/api/routeradmin/users/${userId}/`, {
+                await axios.delete(`https://pagapouco.onrender.com/api/routeradmin/users/${userId}/`, {
                     headers: { Authorization: `Bearer ${user.token}` }
                 });
                 setUsers(users.filter(user => user.id !== userId));
@@ -85,7 +85,7 @@ const UserManagement = () => {
         formData.append('is_staff', isStaff);
 
         try {
-            await axios.put(`http://127.0.0.1:8000/api/routeradmin/users/${selectedUser.id}/`, formData, {
+            await axios.put(`https://pagapouco.onrender.com/api/routeradmin/users/${selectedUser.id}/`, formData, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                     'Content-Type': 'multipart/form-data',

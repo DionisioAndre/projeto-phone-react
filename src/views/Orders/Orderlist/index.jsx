@@ -15,7 +15,7 @@ const Orderlist = () => {
   const handleDelete = async (ordersId) => {
     if (window.confirm('Tem certeza que deseja apagar este pedido?')) {
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/routerorders/${ordersId}/`, {
+        await axios.delete(`https://pagapouco.onrender.com/api/routerorders/${ordersId}/`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -37,7 +37,7 @@ const Orderlist = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/seller/orders/', {
+        const response = await axios.get('https://pagapouco.onrender.com/api/seller/orders/', {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },

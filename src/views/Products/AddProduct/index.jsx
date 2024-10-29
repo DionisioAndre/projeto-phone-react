@@ -89,7 +89,7 @@ const AddProduct = () => {
         setError('');
 
         try {
-            await axios.post('http://127.0.0.1:8000/api/routerproducts/', data, {
+            await axios.post('https://pagapouco.onrender.com/api/routerproducts/', data, {
                 headers: {
                     Authorization: `Bearer ${user.token}`
                 }

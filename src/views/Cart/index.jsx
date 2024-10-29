@@ -123,7 +123,7 @@ export const Cart = () => {
                 const image = item.img;
                 formDataToSend.append('image', image);
 
-                await axios.post('http://127.0.0.1:8000/api/routerorders/', formDataToSend, {
+                await axios.post('https://pagapouco.onrender.com/api/routerorders/', formDataToSend, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data'

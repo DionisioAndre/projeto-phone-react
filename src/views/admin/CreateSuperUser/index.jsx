@@ -32,7 +32,7 @@ const CreateSuperUser = () => {
         const sanitizedEmail = sanitizeInput(email);
 
         try {
-            const response = await axios.post('pagapouco-app.herokuapp.com/api/routersuperusers/', {
+            const response = await axios.post('https://pagapouco.onrender.com/api/routersuperusers/', {
                 username: sanitizedUsername,
                 password: sanitizedPassword,
                 email: sanitizedEmail,
