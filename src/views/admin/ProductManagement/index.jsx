@@ -25,7 +25,6 @@ const ProductManagement = () => {
         return input.replace(/<script.*?>.*?<\/script>/gi, '').trim(); // Remove scripts
     };
 
-    // Mover a função fetchProducts para fora do useEffect
     const fetchProducts = async () => {
         if (!user) return;
 
@@ -124,7 +123,7 @@ const ProductManagement = () => {
             });
             setShowModal(false);
             resetForm();
-            await fetchProducts(); // Chama a função aqui
+            fetchProducts(); // Chama a função aqui sem await
         } catch (err) {
             setError('Erro ao atualizar produto.');
             if (err.response && err.response.status === 401) {

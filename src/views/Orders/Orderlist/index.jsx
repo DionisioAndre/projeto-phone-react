@@ -10,8 +10,7 @@ const Orderlist = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user, logoutUser } = useContext(AuthContext);
-  const formatImageUrl = (url) => url.replace('/media/', '/api/media/');
+  const { user, logoutUser } = useContext(AuthContext); // Certifique-se de que logoutUser está disponível aqui
 
   const handleDelete = async (ordersId) => {
     if (window.confirm('Tem certeza que deseja apagar este pedido?')) {
@@ -26,10 +25,10 @@ const Orderlist = () => {
         setError('Erro ao apagar produto.');
         if (err.response && err.response.status === 401) {
           alert("A sessão expirou! Por favor, faça o login");
-          logoutUser(); // Chamada da função correta
+          logoutUser(); // Chamada da função
           navigate('/loginpage');
         } else {
-          alert(error); // Aqui o ESLint pode dar alerta, mas você pode mantê-lo.
+          alert(error);
         }
       }
     }
@@ -48,10 +47,10 @@ const Orderlist = () => {
         setError(err.message);
         if (err.response && err.response.status === 401) {
           alert("A sessão expirou! Por favor, faça o login");
-          logoutUser(); // Chamada da função correta
+          logoutUser(); // Chamada da função
           navigate('/loginpage');
         } else {
-          alert(error); // Aqui o ESLint pode dar alerta, mas você pode mantê-lo.
+          alert(error);
         }
       } finally {
         setLoading(false);
@@ -81,10 +80,6 @@ const Orderlist = () => {
               {orders.map(order => (
                 <div key={order.id} className="col-md-4 mb-4">
                   <h3>Pedido ID: {order.id}</h3>
-                  <img src={formatImageUrl(order.image)} alt="imagem" className="card-img-top cor" />
-                  <p className="card-text">Preço: R${order.price}</p>
-                  <p>Quantidade: {order.quantity}</p>
-                  <p>Data do Pedido: {new Date(order.created_at).toLocaleDateString()}</p>
                   <Button variant="danger" onClick={() => handleDelete(order.id)}>Apagar</Button>
                   <hr />
                 </div>
