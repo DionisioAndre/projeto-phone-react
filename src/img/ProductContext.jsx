@@ -12,7 +12,7 @@ export const ProductProvider = ({ children }) => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('pagapouco-app.herokuapp.com/api/products/public/');
+                const response = await axios.get('https://pagapouco.onrender.com/api/products/public/');
                 setProducts(response.data);
             } catch (err) {
                 setError('Erro ao buscar produtos.');
